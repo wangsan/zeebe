@@ -55,15 +55,14 @@ public final class SubProcessTransformer implements ModelElementTransformer<SubP
       final ExecutableFlowElementContainer parentSubProc =
           currentWorkflow.getElementById(scope.getId(), ExecutableFlowElementContainer.class);
 
-      parentEvents = parentSubProc.getEvents();
+      parentSubProc.attach(subprocess);
     } else {
       // top-level start event
-      parentEvents = currentWorkflow.getEvents();
+      currentWorkflow.attach(subprocess);
     }
 
     final ExecutableStartEvent startEvent = subprocess.getStartEvents().iterator().next();
 
-    parentEvents.add(startEvent);
     startEvent.setEventSubProcess(subprocess.getId());
     startEvent.bindLifecycleState(
         WorkflowInstanceIntent.EVENT_OCCURRED, BpmnStep.EVENT_SUBPROC_EVENT_OCCURRED);
