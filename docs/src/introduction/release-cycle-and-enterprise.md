@@ -1,4 +1,4 @@
-# Release Cycle and Enterprise
+# Release Cycle and Enterprise Support
 
 
 ### Release Cycle
@@ -10,24 +10,25 @@ which defines a version number using the `MAJOR.MINOR.PATCH` pattern.
 - `MINOR` version can add functionality in a backwards compatible manner
 - `PATCH` version can make backwards compatible bug fixes.
 
-The Zeebe Team strives to release a new minor version of Zeebe every 3 month
-and in between two alpha release each month for the upcoming minor version.
+The Zeebe team strives to release: 
+- A new minor version of Zeebe every three months
+- In between minor versions, two alpha releases (to preview the upcoming minor version)
 
-As of this writing Zeebe supports the last to released minor versions with
-patch releases. Patch release are offered on a best effort basis for the
+At the time of writing, Zeebe supports the last two released minor versions with
+patch releases. Patch releases are offered on a best effort basis for the
 currently supported versions.
 
 
-### Breaking Changes before Zeebe 1.0
+### Breaking Changes Before Zeebe 1.0
 
-Given how early we are in the Zeebe journey, we're not ready to call it a 1.0
+Given how early we are in the Zeebe journey, we're not ready to make it a 1.0
 release, and we want it to be transparent that this was a deliberate decision.
 If we do end up having to make breaking API changes, we'd rather do so before
 we get to 1.0 and not by moving to 2.0 just a few months after a 1.0 release.
 
 Of course, even in Zeebe's pre-1.0 state, we'll always make our best effort to
 avoid breaking changes, to communicate early and often about planned changes,
-and to provide a migration path if we do need to make such a change.
+and if possible, to provide a migration path if we do need to make such a change.
 
 
 ### Supported Environments
@@ -53,7 +54,7 @@ and to provide a migration path if we do need to make such a change.
 Camunda offers enterprise support for on-prem installations of Zeebe and
 Operate, including support SLAs and a production license for Operate.
 
-To learn more please contact us on
+To learn more, please contact us on
 [https://zeebe.io/enterprise/](https://zeebe.io/enterprise/).
 
 ### Camunda Cloud
@@ -65,7 +66,7 @@ modern software architectures.
 
 But even with a best-in-class architecture, operating a distributed workflow
 engine 24x7 can be challenging and time consuming. We've heard from a number of
-users who would be happy for us to run Zeebe and Operate on their behalf.
+users who would be happy to have us run Zeebe and Operate on their behalf.
 
 With that in mind, we have a dedicated team–additional to the Zeebe core
 engineering team building the workflow engine–currently working the first
