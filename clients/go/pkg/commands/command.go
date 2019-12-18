@@ -28,3 +28,19 @@ type Command struct {
 	requestTimeout time.Duration
 	retryPredicate func(context.Context, error) bool
 }
+
+// setClientTimeout extends the context with the command's timeout, if none is set. If there was already a timeout,
+//the return will be the original context and a no-op cancelFunc (that is still safe to call)
+func (cmd *Command) setClientTimeout(ctx context.Context) (context.Context, context.CancelFunc) {
+	return cmd.setTimeout(ctx, cmd.requestTimeout)
+}
+
+// setTimeout extends the context with the supplied timeout if none is set. If there was already a timeout, the return
+// will be the original context and a no-op CancelFunc (that is still safe to call)
+func (cmd *Command) setTimeout(ctx context.Context, timeout time.Duration) (context.Context, context.CancelFunc) {
+	if _, hasDeadline := ctx.Deadline(); !hasDeadline {
+		return context.WithTimeout(ctx, timeout)
+	}
+
+	return ctx, func() {}
+}

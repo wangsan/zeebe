@@ -14,6 +14,7 @@
 package commands
 
 import (
+	"context"
 	"fmt"
 	"github.com/spf13/cobra"
 	"github.com/zeebe-io/zeebe/clients/go/pkg/pb"
@@ -38,7 +39,7 @@ var statusCmd = &cobra.Command{
 	Args:    cobra.NoArgs,
 	PreRunE: initClient,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		response, err := client.NewTopologyCommand().Send()
+		response, err := client.NewTopologyCommand().Send(context.Background())
 		if err != nil {
 			return err
 		}

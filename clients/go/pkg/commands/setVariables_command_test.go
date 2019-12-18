@@ -48,7 +48,7 @@ func TestSetVariablesCommandWithVariablesFromString(t *testing.T) {
 		t.Error("Failed to set variables: ", err)
 	}
 
-	response, err := variablesCommand.Send()
+	response, err := variablesCommand.Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -84,7 +84,7 @@ func TestSetVariablesCommandWithVariablesFromStringer(t *testing.T) {
 		t.Error("Failed to set variables: ", err)
 	}
 
-	response, err := variablesCommand.Send()
+	response, err := variablesCommand.Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -120,7 +120,7 @@ func TestSetVariablesCommandWithVariablesFromObject(t *testing.T) {
 		t.Error("Failed to set variables: ", err)
 	}
 
-	response, err := variablesCommand.Send()
+	response, err := variablesCommand.Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -156,7 +156,7 @@ func TestSetVariablesCommandWithVariablesFromObjectOmitempty(t *testing.T) {
 		t.Error("Failed to set variables: ", err)
 	}
 
-	response, err := variablesCommand.Send()
+	response, err := variablesCommand.Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -192,7 +192,7 @@ func TestSetVariablesCommandWithVariablesFromObjectIgnoreOmitempty(t *testing.T)
 		t.Error("Failed to set variables: ", err)
 	}
 
-	response, err := variablesCommand.Send()
+	response, err := variablesCommand.Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -230,7 +230,7 @@ func TestSetVariablesCommandWithVariablesFromMap(t *testing.T) {
 		t.Error("Failed to set variables: ", err)
 	}
 
-	response, err := variablesCommand.Send()
+	response, err := variablesCommand.Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")

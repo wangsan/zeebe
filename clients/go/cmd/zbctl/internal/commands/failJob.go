@@ -15,6 +15,7 @@
 package commands
 
 import (
+	"context"
 	"github.com/spf13/cobra"
 	"github.com/zeebe-io/zeebe/clients/go/pkg/commands"
 	"log"
@@ -32,7 +33,11 @@ var failJobCmd = &cobra.Command{
 	Args:    keyArg(&failJobKey),
 	PreRunE: initClient,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		_, err := client.NewFailJobCommand().JobKey(failJobKey).Retries(failJobRetriesFlag).ErrorMessage(failJobErrorMessage).Send()
+		_, err := client.NewFailJobCommand().
+			JobKey(failJobKey).
+			Retries(failJobRetriesFlag).
+			ErrorMessage(failJobErrorMessage).
+			Send(context.Background())
 		if err == nil {
 			log.Println("Failed job with key", failJobKey, "and set remaining retries to", failJobRetriesFlag)
 		}

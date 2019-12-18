@@ -22,7 +22,7 @@ import (
 )
 
 type DispatchFailJobCommand interface {
-	Send() (*pb.FailJobResponse, error)
+	Send(context.Context) (*pb.FailJobResponse, error)
 }
 
 type FailJobCommandStep1 interface {
@@ -58,13 +58,13 @@ func (cmd *FailJobCommand) ErrorMessage(errorMessage string) FailJobCommandStep3
 	return cmd
 }
 
-func (cmd *FailJobCommand) Send() (*pb.FailJobResponse, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), cmd.requestTimeout)
+func (cmd *FailJobCommand) Send(ctx context.Context) (*pb.FailJobResponse, error) {
+	ctx, cancel := cmd.setClientTimeout(ctx)
 	defer cancel()
 
 	response, err := cmd.gateway.FailJob(ctx, &cmd.request)
 	if cmd.retryPredicate(ctx, err) {
-		return cmd.Send()
+		return cmd.Send(ctx)
 	}
 
 	return response, err

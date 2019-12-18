@@ -15,6 +15,7 @@
 package commands
 
 import (
+	"context"
 	"github.com/spf13/cobra"
 	"github.com/zeebe-io/zeebe/clients/go/pkg/commands"
 	"log"
@@ -40,7 +41,14 @@ var activateJobsCmd = &cobra.Command{
 	PreRunE: initClient,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		jobType := args[0]
-		jobs, err := client.NewActivateJobsCommand().JobType(jobType).MaxJobsToActivate(maxJobsToActivateFlag).WorkerName(activateJobsWorkerFlag).Timeout(activateJobsTimeoutFlag).FetchVariables(activateJobsFetchVariablesFlag...).RequestTimeout(activateJobsRequestTimeoutFlag).Send()
+		jobs, err := client.NewActivateJobsCommand().
+			JobType(jobType).
+			MaxJobsToActivate(maxJobsToActivateFlag).
+			WorkerName(activateJobsWorkerFlag).
+			Timeout(activateJobsTimeoutFlag).
+			FetchVariables(activateJobsFetchVariablesFlag...).
+			RequestTimeout(activateJobsRequestTimeoutFlag).
+			Send(context.Background())
 		if err != nil {
 			return err
 		}

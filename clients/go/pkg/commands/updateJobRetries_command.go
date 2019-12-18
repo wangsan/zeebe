@@ -26,7 +26,7 @@ const (
 )
 
 type DispatchUpdateJobRetriesCommand interface {
-	Send() (*pb.UpdateJobRetriesResponse, error)
+	Send(context.Context) (*pb.UpdateJobRetriesResponse, error)
 }
 
 type UpdateJobRetriesCommandStep1 interface {
@@ -54,13 +54,13 @@ func (cmd *UpdateJobRetriesCommand) Retries(retries int32) DispatchUpdateJobRetr
 	return cmd
 }
 
-func (cmd *UpdateJobRetriesCommand) Send() (*pb.UpdateJobRetriesResponse, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), cmd.requestTimeout)
+func (cmd *UpdateJobRetriesCommand) Send(ctx context.Context) (*pb.UpdateJobRetriesResponse, error) {
+	ctx, cancel := cmd.setClientTimeout(ctx)
 	defer cancel()
 
 	response, err := cmd.gateway.UpdateJobRetries(ctx, &cmd.request)
 	if cmd.retryPredicate(ctx, err) {
-		return cmd.Send()
+		return cmd.Send(ctx)
 	}
 
 	return response, err

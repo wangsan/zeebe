@@ -14,6 +14,7 @@
 package commands
 
 import (
+	"context"
 	"github.com/zeebe-io/zeebe/clients/go/pkg/commands"
 	"strings"
 
@@ -42,7 +43,7 @@ var createInstanceCmd = &cobra.Command{
 		}
 
 		if createInstanceWithResultFlag == nil {
-			response, err := zbCmd.Send()
+			response, err := zbCmd.Send(context.Background())
 			if err != nil {
 				return err
 			}
@@ -56,7 +57,7 @@ var createInstanceCmd = &cobra.Command{
 					variableNames = append(variableNames, trimedVariableName)
 				}
 			}
-			response, err := zbCmd.WithResult().FetchVariables(variableNames...).Send()
+			response, err := zbCmd.WithResult().FetchVariables(variableNames...).Send(context.Background())
 			if err != nil {
 				return err
 			}

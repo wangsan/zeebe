@@ -40,7 +40,7 @@ func TestResolveIncidentCommand(t *testing.T) {
 
 	command := NewResolveIncidentCommand(client, utils.DefaultTestTimeout, func(context.Context, error) bool { return false })
 
-	response, err := command.IncidentKey(123).Send()
+	response, err := command.IncidentKey(123).Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")

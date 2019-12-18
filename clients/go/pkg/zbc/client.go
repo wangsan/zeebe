@@ -50,6 +50,10 @@ type ClientConfig struct {
 	UsePlaintextConnection bool
 	CaCertificatePath      string
 	CredentialsProvider    CredentialsProvider
+
+	// DefaultRequestTimeout configures the default maximum duration of each command. Used as a default for commands with
+	// no timeout or deadline in their context. Non-positive values disable the timeout and its default value is 15 seconds
+	DefaultRequestTimeout time.Duration
 	// KeepAlive can be used configure how often keep alive messages should be sent to the gateway. These will be sent
 	// whether or not there are active requests. Negative values will result in error and zero will result in the default
 	// of 45 seconds being used
@@ -117,11 +121,6 @@ func (client *ClientImpl) NewJobWorker() worker.JobWorkerBuilderStep1 {
 	return worker.NewJobWorkerBuilder(client.gateway, client, client.requestTimeout)
 }
 
-func (client *ClientImpl) SetRequestTimeout(requestTimeout time.Duration) Client {
-	client.requestTimeout = requestTimeout
-	return client
-}
-
 func (client *ClientImpl) Close() error {
 	return client.connection.Close()
 }
@@ -153,9 +152,14 @@ func NewClient(config *ClientConfig) (Client, error) {
 		return nil, err
 	}
 
+	defaultTimeout := DefaultRequestTimeout
+	if config.DefaultRequestTimeout > 0 {
+		defaultTimeout = config.DefaultRequestTimeout
+	}
+
 	return &ClientImpl{
 		gateway:             pb.NewGatewayClient(conn),
-		requestTimeout:      DefaultRequestTimeout,
+		requestTimeout:      defaultTimeout,
 		connection:          conn,
 		credentialsProvider: config.CredentialsProvider,
 	}, nil

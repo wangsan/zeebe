@@ -40,7 +40,7 @@ func TestUpdateJobRetriesCommand(t *testing.T) {
 
 	command := NewUpdateJobRetriesCommand(client, utils.DefaultTestTimeout, func(context.Context, error) bool { return false })
 
-	response, err := command.JobKey(123).Send()
+	response, err := command.JobKey(123).Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -67,7 +67,7 @@ func TestUpdateJobRetriesCommandWithRetries(t *testing.T) {
 
 	command := NewUpdateJobRetriesCommand(client, utils.DefaultTestTimeout, func(context.Context, error) bool { return false })
 
-	response, err := command.JobKey(123).Retries(23).Send()
+	response, err := command.JobKey(123).Retries(23).Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")

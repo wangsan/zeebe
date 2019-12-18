@@ -31,7 +31,7 @@ type ThrowErrorCommandStep2 interface {
 
 type DispatchThrowErrorCommand interface {
 	ErrorMessage(string) DispatchThrowErrorCommand
-	Send() (*pb.ThrowErrorResponse, error)
+	Send(context.Context) (*pb.ThrowErrorResponse, error)
 }
 
 type ThrowErrorCommand struct {
@@ -54,13 +54,13 @@ func (c *ThrowErrorCommand) ErrorMessage(errorMsg string) DispatchThrowErrorComm
 	return c
 }
 
-func (c *ThrowErrorCommand) Send() (*pb.ThrowErrorResponse, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), c.requestTimeout)
+func (c *ThrowErrorCommand) Send(ctx context.Context) (*pb.ThrowErrorResponse, error) {
+	ctx, cancel := c.setClientTimeout(ctx)
 	defer cancel()
 
 	response, err := c.gateway.ThrowError(ctx, &c.request)
 	if c.retryPredicate(ctx, err) {
-		return c.Send()
+		return c.Send(ctx)
 	}
 
 	return response, err

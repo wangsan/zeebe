@@ -15,6 +15,7 @@
 package commands
 
 import (
+	"context"
 	"github.com/spf13/cobra"
 	"time"
 )
@@ -43,7 +44,7 @@ var publishMessageCmd = &cobra.Command{
 			return err
 		}
 
-		_, err = request.Send()
+		_, err = request.Send(context.Background())
 		return err
 	},
 }

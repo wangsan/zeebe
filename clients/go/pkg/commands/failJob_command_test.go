@@ -40,7 +40,7 @@ func TestFailJobCommand(t *testing.T) {
 
 	command := NewFailJobCommand(client, utils.DefaultTestTimeout, func(context.Context, error) bool { return false })
 
-	response, err := command.JobKey(123).Retries(12).Send()
+	response, err := command.JobKey(123).Retries(12).Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -70,7 +70,7 @@ func TestFailJobCommand_ErrorMessage(t *testing.T) {
 
 	command := NewFailJobCommand(client, utils.DefaultTestTimeout, func(context.Context, error) bool { return false })
 
-	response, err := command.JobKey(123).Retries(12).ErrorMessage(errorMessage).Send()
+	response, err := command.JobKey(123).Retries(12).ErrorMessage(errorMessage).Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")

@@ -15,6 +15,7 @@
 package commands
 
 import (
+	"context"
 	"github.com/spf13/cobra"
 	"log"
 )
@@ -37,7 +38,7 @@ var setVariablesCmd = &cobra.Command{
 		}
 
 		request.Local(setVariablesLocalFlag)
-		response, err := request.Send()
+		response, err := request.Send(context.Background())
 		if err == nil {
 			log.Println("Set the variables of element instance with key", setVariablesKey, "to", setVariablesVariablesFlag, "with command", response.GetKey())
 		}

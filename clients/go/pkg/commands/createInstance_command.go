@@ -26,11 +26,11 @@ const LatestVersion = -1
 const DeadLineOffset = 10 * time.Second
 
 type DispatchCreateInstanceCommand interface {
-	Send() (*pb.CreateWorkflowInstanceResponse, error)
+	Send(context.Context) (*pb.CreateWorkflowInstanceResponse, error)
 }
 
 type DispatchCreateInstanceWithResultCommand interface {
-	Send() (*pb.CreateWorkflowInstanceWithResultResponse, error)
+	Send(context.Context) (*pb.CreateWorkflowInstanceWithResultResponse, error)
 }
 
 type CreateInstanceCommandStep1 interface {
@@ -154,26 +154,26 @@ func (cmd *CreateInstanceWithResultCommand) FetchVariables(variableNames ...stri
 	return cmd
 }
 
-func (cmd *CreateInstanceCommand) Send() (*pb.CreateWorkflowInstanceResponse, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), cmd.requestTimeout)
+func (cmd *CreateInstanceCommand) Send(ctx context.Context) (*pb.CreateWorkflowInstanceResponse, error) {
+	ctx, cancel := cmd.setClientTimeout(ctx)
 	defer cancel()
 
 	response, err := cmd.gateway.CreateWorkflowInstance(ctx, &cmd.request)
 	if cmd.retryPredicate(ctx, err) {
-		return cmd.Send()
+		return cmd.Send(ctx)
 	}
 
 	return response, err
 }
 
-func (cmd *CreateInstanceWithResultCommand) Send() (*pb.CreateWorkflowInstanceWithResultResponse, error) {
+func (cmd *CreateInstanceWithResultCommand) Send(ctx context.Context) (*pb.CreateWorkflowInstanceWithResultResponse, error) {
 	// increase request by dead line offset to not close the connection before the request timeout to the broker is triggered
-	ctx, cancel := context.WithTimeout(context.Background(), cmd.requestTimeout+DeadLineOffset)
+	ctx, cancel := cmd.setTimeout(ctx, cmd.requestTimeout+DeadLineOffset)
 	defer cancel()
 
 	response, err := cmd.gateway.CreateWorkflowInstanceWithResult(ctx, &cmd.request)
 	if cmd.retryPredicate(ctx, err) {
-		return cmd.Send()
+		return cmd.Send(ctx)
 	}
 
 	return response, err

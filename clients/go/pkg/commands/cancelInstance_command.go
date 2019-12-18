@@ -25,7 +25,7 @@ type CancelInstanceStep1 interface {
 }
 
 type DispatchCancelWorkflowInstanceCommand interface {
-	Send() (*pb.CancelWorkflowInstanceResponse, error)
+	Send(context.Context) (*pb.CancelWorkflowInstanceResponse, error)
 }
 
 type CancelWorkflowInstanceCommand struct {
@@ -33,13 +33,13 @@ type CancelWorkflowInstanceCommand struct {
 	request pb.CancelWorkflowInstanceRequest
 }
 
-func (cmd CancelWorkflowInstanceCommand) Send() (*pb.CancelWorkflowInstanceResponse, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), cmd.requestTimeout)
+func (cmd CancelWorkflowInstanceCommand) Send(ctx context.Context) (*pb.CancelWorkflowInstanceResponse, error) {
+	ctx, cancel := cmd.setClientTimeout(ctx)
 	defer cancel()
 
 	response, err := cmd.gateway.CancelWorkflowInstance(ctx, &cmd.request)
 	if cmd.retryPredicate(ctx, err) {
-		return cmd.Send()
+		return cmd.Send(ctx)
 	}
 
 	return response, err

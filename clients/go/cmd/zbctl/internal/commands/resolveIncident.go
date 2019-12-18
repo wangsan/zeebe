@@ -15,6 +15,7 @@
 package commands
 
 import (
+	"context"
 	"github.com/spf13/cobra"
 	"log"
 )
@@ -29,7 +30,7 @@ var resolveIncidentCommand = &cobra.Command{
 	Args:    keyArg(&incidentKey),
 	PreRunE: initClient,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		_, err := client.NewResolveIncidentCommand().IncidentKey(incidentKey).Send()
+		_, err := client.NewResolveIncidentCommand().IncidentKey(incidentKey).Send(context.Background())
 		if err == nil {
 			log.Println("Resolved an incident of a workflow instance with key", incidentKey)
 		}

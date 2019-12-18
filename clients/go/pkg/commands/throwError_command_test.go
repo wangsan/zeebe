@@ -41,7 +41,7 @@ func TestThrowErrorCommand(t *testing.T) {
 
 	command := NewThrowErrorCommand(client, utils.DefaultTestTimeout, func(context.Context, error) bool { return false })
 
-	response, err := command.JobKey(123).ErrorCode("someErrorCode").ErrorMessage("someErrorMessage").Send()
+	response, err := command.JobKey(123).ErrorCode("someErrorCode").ErrorMessage("someErrorMessage").Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")

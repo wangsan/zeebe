@@ -30,7 +30,7 @@ const (
 )
 
 type DispatchActivateJobsCommand interface {
-	Send() ([]entities.Job, error)
+	Send(ctx context.Context) ([]entities.Job, error)
 }
 
 type ActivateJobsCommandStep1 interface {
@@ -86,14 +86,14 @@ func (cmd *ActivateJobsCommand) RequestTimeout(timeout time.Duration) ActivateJo
 	return cmd
 }
 
-func (cmd *ActivateJobsCommand) Send() ([]entities.Job, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), cmd.requestTimeout)
+func (cmd *ActivateJobsCommand) Send(ctx context.Context) ([]entities.Job, error) {
+	ctx, cancel := cmd.setClientTimeout(ctx)
 	defer cancel()
 
 	stream, err := cmd.gateway.ActivateJobs(ctx, &cmd.request)
 	if err != nil {
 		if cmd.retryPredicate(ctx, err) {
-			return cmd.Send()
+			return cmd.Send(ctx)
 		}
 		return nil, err
 	}

@@ -40,13 +40,13 @@ func (cmd *DeployCommand) AddResource(definition []byte, name string, resourceTy
 	return cmd
 }
 
-func (cmd *DeployCommand) Send() (*pb.DeployWorkflowResponse, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), cmd.requestTimeout)
+func (cmd *DeployCommand) Send(ctx context.Context) (*pb.DeployWorkflowResponse, error) {
+	ctx, cancel := cmd.setClientTimeout(ctx)
 	defer cancel()
 
 	response, err := cmd.gateway.DeployWorkflow(ctx, &cmd.request)
 	if cmd.retryPredicate(ctx, err) {
-		return cmd.Send()
+		return cmd.Send(ctx)
 	}
 
 	return response, err

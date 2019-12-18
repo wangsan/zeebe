@@ -23,7 +23,7 @@ import (
 )
 
 type DispatchCompleteJobCommand interface {
-	Send() (*pb.CompleteJobResponse, error)
+	Send(context.Context) (*pb.CompleteJobResponse, error)
 }
 
 type CompleteJobCommandStep1 interface {
@@ -88,13 +88,13 @@ func (cmd *CompleteJobCommand) VariablesFromMap(variables map[string]interface{}
 	return cmd.VariablesFromObject(variables)
 }
 
-func (cmd *CompleteJobCommand) Send() (*pb.CompleteJobResponse, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), cmd.requestTimeout)
+func (cmd *CompleteJobCommand) Send(ctx context.Context) (*pb.CompleteJobResponse, error) {
+	ctx, cancel := cmd.setClientTimeout(ctx)
 	defer cancel()
 
 	response, err := cmd.gateway.CompleteJob(ctx, &cmd.request)
 	if cmd.retryPredicate(ctx, err) {
-		return cmd.Send()
+		return cmd.Send(ctx)
 	}
 
 	return response, err

@@ -50,7 +50,7 @@ type PublishMessageCommandStep3 interface {
 }
 
 type DispatchPublishMessageCommand interface {
-	Send() (*pb.PublishMessageResponse, error)
+	Send(context.Context) (*pb.PublishMessageResponse, error)
 }
 
 type PublishMessageCommand struct {
@@ -116,13 +116,13 @@ func (cmd *PublishMessageCommand) MessageName(name string) PublishMessageCommand
 	return cmd
 }
 
-func (cmd *PublishMessageCommand) Send() (*pb.PublishMessageResponse, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), cmd.requestTimeout)
+func (cmd *PublishMessageCommand) Send(ctx context.Context) (*pb.PublishMessageResponse, error) {
+	ctx, cancel := cmd.setClientTimeout(ctx)
 	defer cancel()
 
 	response, err := cmd.gateway.PublishMessage(ctx, &cmd.request)
 	if cmd.retryPredicate(ctx, err) {
-		return cmd.Send()
+		return cmd.Send(ctx)
 	}
 	return response, err
 }

@@ -41,7 +41,7 @@ func TestPublishMessageCommand(t *testing.T) {
 
 	command := NewPublishMessageCommand(client, utils.DefaultTestTimeout, func(context.Context, error) bool { return false })
 
-	response, err := command.MessageName("foo").CorrelationKey("bar").Send()
+	response, err := command.MessageName("foo").CorrelationKey("bar").Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -69,7 +69,7 @@ func TestPublishMessageCommandWithMessageId(t *testing.T) {
 
 	command := NewPublishMessageCommand(client, utils.DefaultTestTimeout, func(context.Context, error) bool { return false })
 
-	response, err := command.MessageName("foo").CorrelationKey("bar").MessageId("hello").Send()
+	response, err := command.MessageName("foo").CorrelationKey("bar").MessageId("hello").Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -97,7 +97,7 @@ func TestPublishMessageCommandWithTimeToLive(t *testing.T) {
 
 	command := NewPublishMessageCommand(client, utils.DefaultTestTimeout, func(context.Context, error) bool { return false })
 
-	response, err := command.MessageName("foo").CorrelationKey("bar").TimeToLive(time.Duration(6 * time.Minute)).Send()
+	response, err := command.MessageName("foo").CorrelationKey("bar").TimeToLive(time.Duration(6 * time.Minute)).Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -132,7 +132,7 @@ func TestPublishMessageCommandWithVariablesFromString(t *testing.T) {
 		t.Error("Failed to set variables: ", err)
 	}
 
-	response, err := variablesCommand.Send()
+	response, err := variablesCommand.Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -167,7 +167,7 @@ func TestPublishMessageCommandWithVariablesFromStringer(t *testing.T) {
 		t.Error("Failed to set variables: ", err)
 	}
 
-	response, err := variablesCommand.Send()
+	response, err := variablesCommand.Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -202,7 +202,7 @@ func TestPublishMessageCommandWithVariablesFromObject(t *testing.T) {
 		t.Error("Failed to set variables: ", err)
 	}
 
-	response, err := variablesCommand.Send()
+	response, err := variablesCommand.Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -237,7 +237,7 @@ func TestPublishMessageCommandWithVariablesFromObjectOmitempty(t *testing.T) {
 		t.Error("Failed to set variables: ", err)
 	}
 
-	response, err := variablesCommand.Send()
+	response, err := variablesCommand.Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -272,7 +272,7 @@ func TestPublishMessageCommandWithVariablesFromObjectIgnoreOmitEmpty(t *testing.
 		t.Error("Failed to set variables: ", err)
 	}
 
-	response, err := variablesCommand.Send()
+	response, err := variablesCommand.Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -309,7 +309,7 @@ func TestPublishMessageCommandWithVariablesFromMap(t *testing.T) {
 		t.Error("Failed to set variables: ", err)
 	}
 
-	response, err := variablesCommand.Send()
+	response, err := variablesCommand.Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")

@@ -66,7 +66,7 @@ func TestDeployCommand_AddResourceFile(t *testing.T) {
 		AddResourceFile(demoName).
 		AddResourceFile(anotherName).
 		AddResourceFile(yamlName).
-		Send()
+		Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -103,7 +103,7 @@ func TestDeployCommand_AddResource(t *testing.T) {
 
 	response, err := command.
 		AddResource(demoBytes, demoName, pb.WorkflowRequestObject_BPMN).
-		Send()
+		Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")

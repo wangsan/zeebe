@@ -38,7 +38,7 @@ func TestCompleteJobCommand(t *testing.T) {
 
 	response, err := NewCompleteJobCommand(client, utils.DefaultTestTimeout, func(context.Context, error) bool {
 		return false
-	}).JobKey(123).Send()
+	}).JobKey(123).Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -72,7 +72,7 @@ func TestCompleteJobCommandWithVariablesFromString(t *testing.T) {
 		t.Error("Failed to set variables: ", err)
 	}
 
-	response, err := variablesCommand.Send()
+	response, err := variablesCommand.Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -108,7 +108,7 @@ func TestCompleteJobCommandWithVariablesFromStringer(t *testing.T) {
 		t.Error("Failed to set variables: ", err)
 	}
 
-	response, err := variablesCommand.Send()
+	response, err := variablesCommand.Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -142,7 +142,7 @@ func TestCompleteJobCommandWithVariablesFromObject(t *testing.T) {
 		t.Error("Failed to set variables: ", err)
 	}
 
-	response, err := variablesCommand.Send()
+	response, err := variablesCommand.Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -176,7 +176,7 @@ func TestCompleteJobCommandWithVariablesFromObjectOmitempty(t *testing.T) {
 		t.Error("Failed to set variables: ", err)
 	}
 
-	response, err := variablesCommand.Send()
+	response, err := variablesCommand.Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -210,7 +210,7 @@ func TestCompleteJobCommandWithVariablesFromObjectIgnoreOmitempty(t *testing.T) 
 		t.Error("Failed to set variables: ", err)
 	}
 
-	response, err := variablesCommand.Send()
+	response, err := variablesCommand.Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -246,7 +246,7 @@ func TestCompleteJobCommandWithVariablesFromMap(t *testing.T) {
 		t.Error("Failed to set variables: ", err)
 	}
 
-	response, err := variablesCommand.Send()
+	response, err := variablesCommand.Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")

@@ -56,10 +56,10 @@ func (s zeebeWaitStrategy) WaitUntilReady(ctx context.Context, target wait.Strat
 		return err
 	}
 
-	res, err := zbClient.NewTopologyCommand().Send()
+	res, err := zbClient.NewTopologyCommand().Send(context.Background())
 	for (err != nil && status.Code(err) == codes.Unavailable) || !isStable(res) {
 		time.Sleep(s.waitTime)
-		res, err = zbClient.NewTopologyCommand().Send()
+		res, err = zbClient.NewTopologyCommand().Send(context.Background())
 	}
 
 	if err != nil {

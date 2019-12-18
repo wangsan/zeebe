@@ -16,6 +16,7 @@ package commands
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"github.com/spf13/cobra"
 	"github.com/zeebe-io/zeebe/clients/go/pkg/commands"
@@ -118,7 +119,7 @@ func completeJob(jobClient worker.JobClient, job entities.Job, variables string)
 	} else {
 		log.Println("Handler completed job", job.Key, "with variables", variables)
 
-		_, err = request.Send()
+		_, err = request.Send(context.Background())
 		if err != nil {
 			log.Println("Unable to complete job", key, err)
 		}
@@ -127,7 +128,11 @@ func completeJob(jobClient worker.JobClient, job entities.Job, variables string)
 
 func failJob(jobClient worker.JobClient, job entities.Job, error string) {
 	log.Println("Command failed to handle job", job.Key, error)
-	_, err := jobClient.NewFailJobCommand().JobKey(job.Key).Retries(job.Retries - 1).ErrorMessage(error).Send()
+	_, err := jobClient.NewFailJobCommand().
+		JobKey(job.Key).
+		Retries(job.Retries - 1).
+		ErrorMessage(error).
+		Send(context.Background())
 	if err != nil {
 		log.Println("Unable to fail job", err)
 	}

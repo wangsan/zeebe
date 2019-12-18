@@ -115,7 +115,7 @@ func TestActivateJobsCommand(t *testing.T) {
 
 	jobs, err := NewActivateJobsCommand(client, utils.DefaultTestTimeout, func(context.Context, error) bool {
 		return false
-	}).JobType("foo").MaxJobsToActivate(5).Send()
+	}).JobType("foo").MaxJobsToActivate(5).Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -152,7 +152,7 @@ func TestActivateJobsCommandWithTimeout(t *testing.T) {
 
 	jobs, err := NewActivateJobsCommand(client, utils.DefaultTestTimeout, func(context.Context, error) bool {
 		return false
-	}).JobType("foo").MaxJobsToActivate(5).Timeout(1 * time.Minute).Send()
+	}).JobType("foo").MaxJobsToActivate(5).Timeout(1 * time.Minute).Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -183,7 +183,7 @@ func TestActivateJobsCommandWithWorkerName(t *testing.T) {
 
 	jobs, err := NewActivateJobsCommand(client, utils.DefaultTestTimeout, func(context.Context, error) bool {
 		return false
-	}).JobType("foo").MaxJobsToActivate(5).WorkerName("bar").Send()
+	}).JobType("foo").MaxJobsToActivate(5).WorkerName("bar").Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -217,7 +217,7 @@ func TestActivateJobsCommandWithFetchVariables(t *testing.T) {
 
 	jobs, err := NewActivateJobsCommand(client, utils.DefaultTestTimeout, func(context.Context, error) bool {
 		return false
-	}).JobType("foo").MaxJobsToActivate(5).FetchVariables(fetchVariables...).Send()
+	}).JobType("foo").MaxJobsToActivate(5).FetchVariables(fetchVariables...).Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")

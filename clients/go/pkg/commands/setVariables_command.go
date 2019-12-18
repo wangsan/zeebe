@@ -25,7 +25,7 @@ import (
 
 type DispatchSetVariablesCommand interface {
 	Local(bool) DispatchSetVariablesCommand
-	Send() (*pb.SetVariablesResponse, error)
+	Send(context.Context) (*pb.SetVariablesResponse, error)
 }
 
 type SetVariablesCommandStep1 interface {
@@ -93,13 +93,13 @@ func (cmd *SetVariablesCommand) Local(local bool) DispatchSetVariablesCommand {
 	return cmd
 }
 
-func (cmd *SetVariablesCommand) Send() (*pb.SetVariablesResponse, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), cmd.requestTimeout)
+func (cmd *SetVariablesCommand) Send(ctx context.Context) (*pb.SetVariablesResponse, error) {
+	ctx, cancel := cmd.setClientTimeout(ctx)
 	defer cancel()
 
 	response, err := cmd.gateway.SetVariables(ctx, &cmd.request)
 	if cmd.retryPredicate(ctx, err) {
-		return cmd.Send()
+		return cmd.Send(ctx)
 	}
 
 	return response, err

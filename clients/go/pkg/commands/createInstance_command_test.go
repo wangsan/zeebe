@@ -52,7 +52,7 @@ func TestCreateWorkflowInstanceCommand(t *testing.T) {
 
 	command := NewCreateInstanceCommand(client, utils.DefaultTestTimeout, func(context.Context, error) bool { return false })
 
-	response, err := command.WorkflowKey(123).Send()
+	response, err := command.WorkflowKey(123).Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -84,7 +84,7 @@ func TestCreateWorkflowInstanceCommandByBpmnProcessId(t *testing.T) {
 
 	command := NewCreateInstanceCommand(client, utils.DefaultTestTimeout, func(context.Context, error) bool { return false })
 
-	response, err := command.BPMNProcessId("foo").LatestVersion().Send()
+	response, err := command.BPMNProcessId("foo").LatestVersion().Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -116,7 +116,7 @@ func TestCreateWorkflowInstanceCommandByBpmnProcessIdAndVersion(t *testing.T) {
 
 	command := NewCreateInstanceCommand(client, utils.DefaultTestTimeout, func(context.Context, error) bool { return false })
 
-	response, err := command.BPMNProcessId("foo").Version(56).Send()
+	response, err := command.BPMNProcessId("foo").Version(56).Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -155,7 +155,7 @@ func TestCreateWorkflowInstanceCommandWithVariablesFromString(t *testing.T) {
 		t.Error("Failed to set variables: ", err)
 	}
 
-	response, err := variablesCommand.Send()
+	response, err := variablesCommand.Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -194,7 +194,7 @@ func TestCreateWorkflowInstanceCommandWithVariablesFromStringer(t *testing.T) {
 		t.Error("Failed to set variables: ", err)
 	}
 
-	response, err := variablesCommand.Send()
+	response, err := variablesCommand.Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -233,7 +233,7 @@ func TestCreateWorkflowInstanceCommandWithVariablesFromObject(t *testing.T) {
 		t.Error("Failed to set variables: ", err)
 	}
 
-	response, err := variablesCommand.Send()
+	response, err := variablesCommand.Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -272,7 +272,7 @@ func TestCreateWorkflowInstanceCommandWithVariablesFromObjectOmitempty(t *testin
 		t.Error("Failed to set variables: ", err)
 	}
 
-	response, err := variablesCommand.Send()
+	response, err := variablesCommand.Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -311,7 +311,7 @@ func TestCreateWorkflowInstanceCommandWithVariablesFromObjectIgnoreOmitempty(t *
 		t.Error("Failed to set variables: ", err)
 	}
 
-	response, err := variablesCommand.Send()
+	response, err := variablesCommand.Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -352,7 +352,7 @@ func TestCreateWorkflowInstanceCommandWithVariablesFromMap(t *testing.T) {
 		t.Error("Failed to set variables: ", err)
 	}
 
-	response, err := variablesCommand.Send()
+	response, err := variablesCommand.Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -386,7 +386,7 @@ func TestCreateWorkflowInstanceWithResultCommand(t *testing.T) {
 
 	command := NewCreateInstanceCommand(client, utils.DefaultTestTimeout, func(context.Context, error) bool { return false })
 
-	response, err := command.WorkflowKey(123).WithResult().Send()
+	response, err := command.WorkflowKey(123).WithResult().Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -422,7 +422,7 @@ func TestCreateWorkflowInstanceWithResultCommandByBpmnProcessId(t *testing.T) {
 
 	command := NewCreateInstanceCommand(client, utils.DefaultTestTimeout, func(context.Context, error) bool { return false })
 
-	response, err := command.BPMNProcessId("foo").LatestVersion().WithResult().Send()
+	response, err := command.BPMNProcessId("foo").LatestVersion().WithResult().Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -458,7 +458,7 @@ func TestCreateWorkflowInstanceWithResultCommandByBpmnProcessIdAndVersion(t *tes
 
 	command := NewCreateInstanceCommand(client, utils.DefaultTestTimeout, func(context.Context, error) bool { return false })
 
-	response, err := command.BPMNProcessId("foo").Version(56).WithResult().Send()
+	response, err := command.BPMNProcessId("foo").Version(56).WithResult().Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -501,7 +501,7 @@ func TestCreateWorkflowInstanceWithResultCommandWithVariablesFromString(t *testi
 		t.Error("Failed to set variables: ", err)
 	}
 
-	response, err := variablesCommand.WithResult().Send()
+	response, err := variablesCommand.WithResult().Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -544,7 +544,7 @@ func TestCreateWorkflowInstanceWithResultCommandWithVariablesFromStringer(t *tes
 		t.Error("Failed to set variables: ", err)
 	}
 
-	response, err := variablesCommand.WithResult().Send()
+	response, err := variablesCommand.WithResult().Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -587,7 +587,7 @@ func TestCreateWorkflowInstanceWithResultCommandWithVariablesFromObject(t *testi
 		t.Error("Failed to set variables: ", err)
 	}
 
-	response, err := variablesCommand.WithResult().Send()
+	response, err := variablesCommand.WithResult().Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -630,7 +630,7 @@ func TestCreateWorkflowInstanceWithResultCommandWithVariablesFromObjectOmitempty
 		t.Error("Failed to set variables: ", err)
 	}
 
-	response, err := variablesCommand.WithResult().Send()
+	response, err := variablesCommand.WithResult().Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -673,7 +673,7 @@ func TestCreateWorkflowInstanceWithResultCommandWithVariablesFromObjectIgnoreOmi
 		t.Error("Failed to set variables: ", err)
 	}
 
-	response, err := variablesCommand.WithResult().Send()
+	response, err := variablesCommand.WithResult().Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -718,7 +718,7 @@ func TestCreateWorkflowInstanceWithResultCommandWithVariablesFromMap(t *testing.
 		t.Error("Failed to set variables: ", err)
 	}
 
-	response, err := variablesCommand.WithResult().Send()
+	response, err := variablesCommand.WithResult().Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -753,7 +753,7 @@ func TestCreateWorkflowInstanceWithResultAndFetchVariablesCommand(t *testing.T) 
 
 	command := NewCreateInstanceCommand(client, utils.DefaultTestTimeout, func(context.Context, error) bool { return false })
 
-	response, err := command.WorkflowKey(123).WithResult().FetchVariables("a", "b", "c").Send()
+	response, err := command.WorkflowKey(123).WithResult().FetchVariables("a", "b", "c").Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
@@ -788,7 +788,7 @@ func TestCreateWorkflowInstanceWithResultAndFetchEmptyVariablesListCommand(t *te
 
 	command := NewCreateInstanceCommand(client, utils.DefaultTestTimeout, func(context.Context, error) bool { return false })
 
-	response, err := command.WorkflowKey(123).WithResult().FetchVariables().Send()
+	response, err := command.WorkflowKey(123).WithResult().FetchVariables().Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")

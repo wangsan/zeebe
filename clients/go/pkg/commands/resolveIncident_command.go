@@ -23,7 +23,7 @@ import (
 )
 
 type DispatchResolveIncidentCommand interface {
-	Send() (*pb.ResolveIncidentResponse, error)
+	Send(context.Context) (*pb.ResolveIncidentResponse, error)
 }
 
 type ResolveIncidentCommandStep1 interface {
@@ -44,13 +44,13 @@ func (cmd *ResolveIncidentCommand) IncidentKey(incidentKey int64) ResolveInciden
 	return cmd
 }
 
-func (cmd *ResolveIncidentCommand) Send() (*pb.ResolveIncidentResponse, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), cmd.requestTimeout)
+func (cmd *ResolveIncidentCommand) Send(ctx context.Context) (*pb.ResolveIncidentResponse, error) {
+	ctx, cancel := cmd.setClientTimeout(ctx)
 	defer cancel()
 
 	response, err := cmd.gateway.ResolveIncident(ctx, &cmd.request)
 	if cmd.retryPredicate(ctx, err) {
-		return cmd.Send()
+		return cmd.Send(ctx)
 	}
 
 	return response, err

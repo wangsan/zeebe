@@ -40,7 +40,7 @@ func TestCancelWorkflowInstanceCommand(t *testing.T) {
 		return false
 	})
 
-	response, err := command.WorkflowInstanceKey(123).Send()
+	response, err := command.WorkflowInstanceKey(123).Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")

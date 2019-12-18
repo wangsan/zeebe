@@ -15,6 +15,7 @@
 package commands
 
 import (
+	"context"
 	"github.com/spf13/cobra"
 	"log"
 )
@@ -35,7 +36,7 @@ var completeJobCmd = &cobra.Command{
 			return err
 		}
 
-		_, err = request.Send()
+		_, err = request.Send(context.Background())
 		if err == nil {
 			log.Println("Completed job with key", completeJobKey, "and variables", completeJobVariablesFlag)
 		}

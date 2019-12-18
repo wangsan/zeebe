@@ -72,7 +72,7 @@ func TestTopologyCommand(t *testing.T) {
 
 	command := NewTopologyCommand(client, utils.DefaultTestTimeout, func(context.Context, error) bool { return false })
 
-	response, err := command.Send()
+	response, err := command.Send(context.Background())
 
 	if err != nil {
 		t.Errorf("Failed to send request")
