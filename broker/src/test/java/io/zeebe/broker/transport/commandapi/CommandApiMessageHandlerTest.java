@@ -14,7 +14,6 @@ import com.netflix.concurrency.limits.limit.SettableLimit;
 import io.zeebe.broker.transport.backpressure.CommandRateLimiter;
 import io.zeebe.broker.transport.backpressure.NoopRequestLimiter;
 import io.zeebe.broker.transport.backpressure.RequestLimiter;
-import io.zeebe.logstreams.LogStreams;
 import io.zeebe.logstreams.log.LogStreamReader;
 import io.zeebe.logstreams.log.LogStreamRecordWriter;
 import io.zeebe.logstreams.log.LoggedEvent;
@@ -49,10 +48,10 @@ import org.junit.rules.TemporaryFolder;
 import org.mockito.MockitoAnnotations;
 
 public final class CommandApiMessageHandlerTest {
-  protected static final RemoteAddress DEFAULT_ADDRESS =
+  private static final RemoteAddress DEFAULT_ADDRESS =
       new RemoteAddressImpl(21, new SocketAddress("foo", 4242));
-  protected static final int LOG_STREAM_PARTITION_ID = 1;
-  protected static final byte[] JOB_EVENT;
+  private static final int LOG_STREAM_PARTITION_ID = 1;
+  private static final byte[] JOB_EVENT;
   private static final int REQUEST_ID = 5;
 
   static {
@@ -77,7 +76,7 @@ public final class CommandApiMessageHandlerTest {
   private BufferingServerOutput serverOutput;
   private SynchronousLogStream logStream;
   private CommandApiMessageHandler messageHandler;
-  private final RequestLimiter noneLimiter = new NoopRequestLimiter();
+  private final RequestLimiter<Intent> noneLimiter = new NoopRequestLimiter<>();
 
   @Before
   public void setup() {
@@ -87,14 +86,13 @@ public final class CommandApiMessageHandlerTest {
     logStorageRule.open();
     serverOutput = new BufferingServerOutput();
     logStream =
-        new SyncLogStream(
-            LogStreams.createLogStream()
-                .withPartitionId(LOG_STREAM_PARTITION_ID)
-                .withLogName(logName)
-                .withActorScheduler(actorSchedulerRule.get())
-                .withLogName(logName)
-                .withLogStorage(logStorageRule.getStorage())
-                .build());
+        SyncLogStream.builder()
+            .withPartitionId(LOG_STREAM_PARTITION_ID)
+            .withLogName(logName)
+            .withActorScheduler(actorSchedulerRule.get())
+            .withLogName(logName)
+            .withLogStorage(logStorageRule.getStorage())
+            .build(actorSchedulerRule.get());
     logStorageRule.setPositionListener(logStream::setCommitPosition);
 
     messageHandler = new CommandApiMessageHandler();
